@@ -1,10 +1,17 @@
+import heapq
+import itertools
 import json
 
 from models import RideRequest, Cab, DESTINATIONS, TIME_SLOTS
 
 CABS_FILE = "cabs.json"
 
-waiting = []   # students waiting for a cab
+queues = {}                    # one waiting queue per trip
+for d in DESTINATIONS:
+    for t in TIME_SLOTS:
+        queues[(d, t)] = []
+
+counter = itertools.count()    # gives 0, 1, 2, ... one number per request
 cabs = []      # filled from a file in the next step
 
 
@@ -23,6 +30,12 @@ def ask_year():
             return int(answer)
         print("Sorry, year must be a number from 1 to 5.")
 
+def find_open_cab(destination, time_slot):
+    for cab in cabs:
+        if (not cab.departed and cab.destination == destination
+                and cab.time_slot == time_slot):
+            return cab
+    return None
 
 def add_request():
     name = input("Name: ").strip()
@@ -32,16 +45,24 @@ def add_request():
     destination = ask_choice("Destination (Delhi/Jaipur): ", DESTINATIONS)
     time_slot = ask_choice("Time (Morning/Afternoon/Evening/Night): ", TIME_SLOTS)
     year = ask_year()
-    waiting.append(RideRequest(name, destination, time_slot, year))
+    request = RideRequest(name, destination, time_slot, year)
+    entry = (-year, next(counter), request)
+    heapq.heappush(queues[(destination, time_slot)], entry)
     print("Request added. You're on the waiting list.")
+    if find_open_cab(destination, time_slot) is None:
+        print("Note: there is no open cab for this trip right now. "
+              "You will stay on the waiting list.")
 
 
 def show_all():
     print("\n--- Waiting students ---")
-    if not waiting:
+    nobody = True
+    for heap in queues.values():
+        for entry in sorted(heap):
+            print(entry[2])
+            nobody = False
+    if nobody:
         print("Nobody is waiting.")
-    for request in waiting:
-        print(request)
 
     print("\n--- Cabs ---")
     if not cabs:
