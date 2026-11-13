@@ -1,17 +1,11 @@
 # Cab Pool Matcher
 
-A small command-line app in Python that helps students share cabs to Delhi or
-Jaipur at the end of the semester. Students submit ride requests, the requests
-wait in a queue for their trip, and when a cab is dispatched it takes the most
-senior students first.
-
-Built for SUTT Backend Recruitment, Task 1.
+An app in Python that helps students share cabs to Delhi or Jaipur at the end of the semester. Students submit ride requests, the requests wait in a queue for their trip, and when a cab is dispatched it gives priority to senior students first.
 
 ## How to run
 
-You need Python 3. No outside packages are used.
+Only Python 3 is required. No outside packages are used.
 
-```
 python3 main.py
 ```
 
@@ -23,12 +17,12 @@ python3 main.py
 4. **Dispatch cab**: pick a destination and time slot. The first open cab for that trip is filled with the most senior waiting students and leaves.
 5. **Quit**
 
-Wrong input (a city we don't serve, a time slot that doesn't exist, "Year 7")
+Wrong input (an invalid city, a time slot that doesn't exist, or a Year other than (1-5))
 shows a friendly message and asks again instead of crashing.
 
-## The cab file
+## The cab file 
 
-Cabs are loaded from `cabs.json` when the app starts. It is a list of cabs:
+Cabs are loaded from `cabs.json` when the app starts. It is a list of cabs with required details:
 
 ```json
 [
@@ -45,10 +39,10 @@ Cabs are always checked in the order they appear in this file, so the app
 gives the same result every time. A cab with invalid values is skipped with a
 message. If the file is missing or broken, the app starts with no cabs.
 
-## How it works
+## Working of the app
 
 - `models.py` has the two classes, `RideRequest` and `Cab`.
-- `main.py` has the menu, the queues and the matching logic.
+- `main.py` has the menu, the queues and the logic for matching.
 - There is one priority queue (a heap, using `heapq`) for every destination
   and time slot pair, for example `("Delhi", "Morning")`.
 - Each heap entry is `(-year, order, request)`. `heapq` is a min-heap, so the
