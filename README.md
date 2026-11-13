@@ -1,6 +1,6 @@
 # Cab Pool Matcher
 
-An app in Python that helps students share cabs to Delhi or Jaipur at the end of the semester. Students submit ride requests, the requests wait in a queue for their trip, and when a cab is dispatched it gives priority to senior students first.
+This is an app in Python that helps students share cabs to Delhi or Jaipur at the end of the semester. Students submit ride requests, the requests wait in a queue for their trip, and when a cab is dispatched it gives priority to senior students first.
 
 ## How to run
 
@@ -9,7 +9,7 @@ Only Python 3 is required. No outside packages are used.
 python3 main.py
 ```
 
-## Menu
+## This is the Menu which appears on screen. The codes 1-5 do their respective tasks
 
 1. **Add ride request**: name, destination, time slot and year. The request joins the waiting queue for that trip.
 2. **Show waiting students and cabs**: everyone still waiting, and every cab with its seats (like `3/4`), status and passengers.
@@ -49,7 +49,7 @@ message. If the file is missing or broken, the app starts with no cabs.
   negative year puts 5th years at the front. `order` is a counter that goes up
   by one with every request.
 
-## Tricky situations
+## Some specifications
 
 **1. Half-empty cab.** A cab can leave with fewer students than seats. Dispatch
 takes as many waiting students as there are (up to the free seats) and the cab
@@ -70,10 +70,10 @@ to compare two `RideRequest` objects, which would crash.
 
 | Operation | Big-O | Why |
 |---|---|---|
-| Add one request | O(log n) | One `heappush` into the trip's heap |
-| Add all 1,000 | O(n log n) | n pushes, each O(log n) |
-| Dispatch one cab | O(k log n), k ≤ 4 | Up to 4 `heappop` calls, each O(log n). Since k is at most 4, this is effectively O(log n) |
-| Find an open cab | O(c), c = number of cabs | A simple loop over the cab list in file order |
+| To add one request | O(log n) | One `heappush` into the trip's heap. log will have base 2 since heap is like a tree so for 1000 waiting it will take 10 steps maximum |
+| Add all 1,000 | O(n log n) | n pushes, each O(log n). all 1000 just require 1 push 1000 times so 1000*10=10,000 (absolute upper limit) |
+| Dispatch one cab | O(k log n), k ≤ 4 | Up to 4 `heappop` calls, each O(log n). Since k is at most 4, this will be at max 40|
+| Find an open cab | O(c), c = number of cabs | A simple loop over the cab list in file order. This will be 5 regardless of the no. of students waiting |
 
 Finding a cab could be made faster by grouping cabs by trip in a dictionary,
 but there are only a few cabs, so a loop is simple and fast enough.
