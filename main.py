@@ -1,4 +1,8 @@
-from models import RideRequest, DESTINATIONS, TIME_SLOTS
+import json
+
+from models import RideRequest, Cab, DESTINATIONS, TIME_SLOTS
+
+CABS_FILE = "cabs.json"
 
 waiting = []   # students waiting for a cab
 cabs = []      # filled from a file in the next step
@@ -45,8 +49,29 @@ def show_all():
     for cab in cabs:
         print(cab)
 
+def load_cabs():
+    try:
+        with open(CABS_FILE) as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        print(f"Could not find {CABS_FILE}. Starting with no cabs.")
+        return
+    except json.JSONDecodeError:
+        print(f"{CABS_FILE} is not valid JSON. Starting with no cabs.")
+        return
+
+    for item in data:
+        if (item["destination"] not in DESTINATIONS
+                or item["time_slot"] not in TIME_SLOTS
+                or not 1 <= item["seats"] <= 4):
+            print(f"Skipping invalid cab: {item}")
+            continue
+        cabs.append(Cab(item["driver"], item["seats"],
+                        item["destination"], item["time_slot"]))
+    print(f"Loaded {len(cabs)} cabs.")
 
 def main():
+    load_cabs()
     while True:
         print("\n===== Cab Pool =====")
         print("1. Add ride request")
