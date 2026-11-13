@@ -12,7 +12,7 @@ for d in DESTINATIONS:
         queues[(d, t)] = []
 
 counter = itertools.count()    # gives 0, 1, 2, ... one number per request
-cabs = []      # filled from a file in the next step
+cabs = []      # this is loaded from cabs.json during startup
 
 
 def ask_choice(prompt, options):
@@ -162,7 +162,7 @@ def main():
         elif choice == "4":
             dispatch_cab()
         elif choice == "5":
-            print("Quitted")
+            print("Bye")
             break
         else:
             print("Please type a number from 1 to 5.")
