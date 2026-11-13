@@ -68,10 +68,21 @@ to compare two `RideRequest` objects, which would crash.
 
 **4. Lots of students (n waiting requests).**
 
-| To add one request | O(log n) | One `heappush` into the trip's heap. log will have base 2 since heap is like a tree so for 1000 waiting it will take 10 steps maximum |
-| Add all 1,000 | O(n log n) | n pushes, each O(log n). all 1000 just require 1 push 1000 times so 1000*10=10,000 (absolute upper limit) |
-| Dispatch one cab | O(k log n), k ≤ 4 | Up to 4 `heappop` calls, each O(log n). Since k is at most 4, this will be at max 40|
-| Find an open cab | O(c), c = number of cabs | A simple loop over the cab list in file order. This will be 5 regardless of the no. of students waiting |
+To add one request
+ O(log n) 
+ One `heappush` into the trip's heap. log will have base 2 since heap is like a tree so for 1000 waiting it will take 10 steps maximum 
+
+To Add all 1,000 
+O(n log n) 
+n pushes, each O(log n). all 1000 just require 1 push 1000 times so 1000*10=10,000 (absolute upper limit)
+
+To Dispatch one cab 
+O(k log n), k ≤ 4 Up to 4 `heappop` calls, each O(log n). 
+Since k is at most 4, this will be at max 40
+
+To Find an open cab 
+O(c), c = number of cabs
+This will be 5 regardless of the no. of students waiting
 
 Finding a cab could be made faster by grouping cabs by trip in a dictionary,
 but there are only a few cabs, so a loop is simple and fast enough.
