@@ -162,7 +162,7 @@ def main():
         elif choice == "4":
             dispatch_cab()
         elif choice == "5":
-            print("Bye!")
+            print("Quitted")
             break
         else:
             print("Please type a number from 1 to 5.")
